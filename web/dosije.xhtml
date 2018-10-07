@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{dosije.dohvatiPodatke()}" />
+    </f:metadata>
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+            <br/>
+            <ui:define name="title">
+                #{poruke.dosije} - #{dosije.kompanija.naziv}
+            </ui:define>
+            <hr/>
+            <br/>
+
+            <ui:define name="content">
+<!--                <h:form>
+                    <p:commandButton value="#{poruke.nazad}" ajax="false" action="pretraga?faces-redirect=true" />
+                </h:form>
+                <br/>
+                <hr/>-->
+                <h2>#{poruke.podaciOKompaniji}</h2>
+                <h:form>
+                    <h:panelGrid id="polja" columns="2" cellpadding="5" border="1">
+                        <p:outputLabel for="naziv">#{poruke.nazivKompanije}</p:outputLabel>
+                        <p:outputLabel id="naziv" value="#{dosije.kompanija.naziv}" />
+
+                        <p:outputLabel for="adresa">#{poruke.adresa}</p:outputLabel>
+                        <p:inputText id="adresa" value="#{dosije.kompanija.adresa}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="45" size="30"/>
+
+                        <p:outputLabel for="grad">#{poruke.grad}</p:outputLabel>
+                        <p:inputText id="grad" value="#{dosije.kompanija.grad}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="45" size="30"/>
+
+                        <p:outputLabel for="postanskiBroj">#{poruke.postanskiBroj}</p:outputLabel>
+                        <p:inputText id="postanskiBroj" value="#{dosije.kompanija.postanski_broj}"
+                                     converterMessage="#{poruke.poljeMoraBitiBroj}"
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="11" size="11"/>
+
+                        <p:outputLabel for="zemlja">#{poruke.zemlja}</p:outputLabel>
+                        <p:inputText id="zemlja" value="#{dosije.kompanija.zemlja}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="45" size="30"/>
+
+                        <p:outputLabel for="ziro">#{poruke.ziroRacun}</p:outputLabel>
+                        <p:inputText id="ziro" value="#{dosije.kompanija.ziro_racun}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="45" size="30"/>
+
+                        <p:outputLabel for="valuta">#{poruke.valuta}</p:outputLabel>
+                        <p:inputText id="valuta" value="#{dosije.kompanija.valuta}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="3" size="3"/>
+
+                        <p:outputLabel for="pib">#{poruke.pib}</p:outputLabel>
+                        <p:inputText id="pib" value="#{dosije.kompanija.pib}" converterMessage="#{poruke.poljeMoraBitiBroj}"
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="25" size="25"/>
+
+                        <p:outputLabel for="tel1">#{poruke.telefoni}</p:outputLabel>
+                        <h:panelGroup>
+                            <p:inputText id="tel1" value="#{dosije.kompanija.telefon1}" 
+                                         required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="25" size="25"/><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon2}" maxlength="25" size="25" /><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon3}" maxlength="25" size="25" /><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon4}" maxlength="25" size="25" /><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon5}" maxlength="25" size="25"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel for="email1">#{poruke.emailovi}</p:outputLabel>
+                        <h:panelGroup>
+                            <p:inputText id="email1" value="#{dosije.kompanija.email1}" 
+                                         required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="55" size="30"/><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon2}" maxlength="55" size="30"/><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon3}" maxlength="55" size="30"/><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon4}" maxlength="55" size="30"/><br/>
+                            <p:inputText value="#{dosije.kompanija.telefon5}" maxlength="55" size="30"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel for="kontakt">#{poruke.kontakt}</p:outputLabel>
+                        <p:inputText id="kontakt" value="#{dosije.kompanija.kontakt_osoba}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="70" size="30"/>
+
+                        <p:outputLabel for="koTel">#{poruke.telKO}</p:outputLabel>
+                        <p:inputText id="koTel" value="#{dosije.kompanija.ko_telefon}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="25" size="25"/>
+
+                        <p:outputLabel for="koEmail">#{poruke.emailKO}</p:outputLabel>
+                        <p:inputText id="koEmail" value="#{dosije.kompanija.ko_email}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="55" size="30"/>
+
+                        <p:outputLabel for="logo">#{poruke.logo}</p:outputLabel>
+                        <p:inputText id="logo" value="#{dosije.kompanija.logo}" validatorMessage="#{poruke.podrzaneEkstenzijeLogo}" 
+                                     maxlength="260" size="30">
+                            <f:validateRegex pattern="(^$|.*\.(jpe?g|png|tiff?|ai|eps|pdf)$)" />
+                        </p:inputText>
+
+                        <p:outputLabel for="web">#{poruke.vebsajt}</p:outputLabel>
+                        <p:inputText id="web" value="#{dosije.kompanija.web}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="200" size="30"/>
+
+                        <p:outputLabel for="opis">#{poruke.opisKomp}</p:outputLabel>
+                        <p:inputTextarea id="opis" value="#{dosije.kompanija.opis}" maxlength="1500" 
+                                         rows="10" cols="50" autoResize="true" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{dosije.sacuvajIzmene()}" value="#{poruke.sacuvajIzmene}" ajax="true" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+
+                <br/>
+                <hr/>
+                <h2>#{poruke.ugovori}</h2>
+                <p:dataTable value="#{dosije.ugovori}" var="u" rowStyleClass="#{u.jeIstekao() ? 'crvena' : 'plava'}" emptyMessage="/" >
+                    <p:column headerText="#{poruke.tipUgovora}" >
+                        <h:outputText value="#{u.tipUgovora}" />
+                    </p:column>
+                    <p:column headerText="#{poruke.vrstaPaketa}" >
+                        <h:outputText value="#{u.vrstaPaketa}" />
+                    </p:column>
+                    <p:column headerText="#{poruke.datumPotpisivanja}" >
+                        <h:outputText value="#{dateBean.pretvoriJavaUtilDateUDatumString(u.datumPotpisivanja)}" />
+                    </p:column>
+                    <p:column headerText="#{poruke.datumIsticanja}" >
+                        <h:outputText value="#{dateBean.pretvoriJavaUtilDateUDatumString(u.datumIsticanja)}" />
+                    </p:column>
+                </p:dataTable>
+
+            </ui:define>
+
+            <ui:define name="left">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

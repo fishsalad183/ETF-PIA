@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./startTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.registracijaNaslov}
+            </ui:define>
+
+            <ui:param name="activeIndex" value="2"/>
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="ime">#{poruke.ime}</p:outputLabel>
+                        <p:inputText id="ime" value="#{reg.noviKorisnik.ime}" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" size="25" maxlength="45" />
+
+                        <p:outputLabel for="prezime">#{poruke.prezime}</p:outputLabel>
+                        <p:inputText id="prezime" value="#{reg.noviKorisnik.prezime}" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" size="25" maxlength="45" />
+
+                        <p:outputLabel for="email">#{poruke.email}</p:outputLabel>
+                        <p:inputText id="email" value="#{reg.noviKorisnik.email}" required="true" requiredMessage="#{poruke.obaveznoPolje}" 
+                                     size="25" maxlength="100" validatorMessage="#{poruke.emailFormaNeodgovarajuca}" >
+                            <f:validateRegex pattern="([^.@]+)(\.[^.@]+)*@([^.@]+\.)+([^.@]+)"/>
+                        </p:inputText>
+
+                        <p:outputLabel for="institucija">#{poruke.institucija}</p:outputLabel>
+                        <p:inputText id="institucija" value="#{reg.noviKorisnik.institucija}" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" required="true" size="25" maxlength="45"/>
+
+                        <p:outputLabel for="username">#{poruke.username}</p:outputLabel>
+                        <p:inputText id="username" value="#{reg.noviKorisnik.username}" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" size="30" maxlength="30" binding="#{reg.component}"/>
+
+                        <p:outputLabel for="password1">#{poruke.password}</p:outputLabel>
+                        <p:password id="password1" value="#{reg.noviKorisnik.password}" required="true" match="password2" size="12" maxlength="12" 
+                                    title="#{poruke.passwordPravila}" validatorMessage="#{poruke.passwordValidatorMessage}" 
+                                    requiredMessage="#{poruke.passwordNijeUnet}">
+                            <f:validateLength minimum="8" maximum="12"/>
+                            <!--KARAKTER & MORA DA BUDE &amp KAKO NE BI DOSLO DO GRESKE U PREVODJENJU JER IMA POSEBNO ZNACENJE PRI PARSIRANJU XHTML, A U SAMOM REGULARNOM IZRAZU TREBA DA STOJI SAMO &--> 
+                            <f:validateRegex pattern="^(?!.*(.)\1{2,})([A-Z](?=(.*[a-z]){3,})|[a-z](?=.*[A-Z])(?=(.*[a-z]){2,}))(?=.*[\d])(?=.*[!@#$%^&amp;*_])[A-Za-z\d!@#$%^&amp;*_]*$"/>
+                        </p:password>
+
+                        <p:outputLabel for="password2">#{poruke.passwordPotvrda}</p:outputLabel>
+                        <p:password id="password2" required="true" size="12" maxlength="12" requiredMessage="#{poruke.passwordPotvrdaNijeUneta}"/>
+
+                        <p:outputLabel for="pol">#{poruke.pol}</p:outputLabel>
+                        <p:selectOneRadio id="pol" value="#{reg.noviKorisnik.pol}" required="true" requiredMessage="#{poruke.obaveznoPolje}" >
+                            <f:selectItem itemLabel="#{poruke.muskiPol}" itemValue="M"/>
+                            <f:selectItem itemLabel="#{poruke.zenskiPol}" itemValue="Z"/>
+                        </p:selectOneRadio>
+
+                        <p:outputLabel for="datum">#{poruke.datumRodj}</p:outputLabel>
+                        <p:calendar id="datum" value="#{reg.noviKorisnik.datum_rodjenja}" required="true" requiredMessage="#{poruke.obaveznoPolje}"
+                                    navigator="true" pattern="dd.MM.yyyy." yearRange="c-100:c" maxdate="c"/> 
+
+                        <p:outputLabel for="upload">#{poruke.slika}</p:outputLabel>
+                        <p:fileUpload id="upload" allowTypes="/(\.|\/)(jpe?g|png|tiff?)$/" sizeLimit="1048576" fileLimit="1" mode="advanced"
+                                      label="#{poruke.odaberi}" uploadLabel="#{poruke.upload}" cancelLabel="#{poruke.otkazi}"
+                                      invalidFileMessage="#{poruke.invalidFileMessage}" invalidSizeMessage="#{poruke.invalidSizeMessage}"
+                                      fileLimitMessage="#{poruke.fileLimitMessage}" validatorMessage="#{poruke.neodgovarajuceDimenzije}"
+                                      fileUploadListener="#{uploadBeanKorisnik.fileUploadListener}" />
+
+                        <p:outputLabel for="linkedin">#{poruke.linkedin}</p:outputLabel>
+                        <p:inputText id="linkedin" value="#{reg.noviKorisnik.linkedin}" size="25" maxlength="100" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{reg.registrujSe(uploadBeanKorisnik)}"
+                                         value="#{poruke.registracijaDugme}" ajax="false" update="polja" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+    </h:body>
+</html>
+

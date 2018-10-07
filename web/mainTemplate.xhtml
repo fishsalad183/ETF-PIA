@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <title><ui:insert name="title">mainTemplate</ui:insert></title>
+    </h:head>
+
+    <h:body>
+
+        <p:layout fullPage="true">
+
+            <p:growl id="growl" sticky="false" life="10000" globalOnly="true" />
+
+            <p:layoutUnit id="sever" position="north" size="90">
+                <div id="top">
+                    <p:graphicImage value="resources/ETF.png" />
+                    <h:form rendered="#{not empty user}">
+                        <h:outputLabel value="#{poruke.ulogovanKao} #{user.username}" />
+                        <hr/>
+                        <p:commandButton value="#{poruke.logout}" action="#{logout.logout()}" ajax="false" />
+                    </h:form>
+                    <h:form>
+                        <p:commandButton value="#{poruke.nazadNaLoginStranu}" action="login?faces-redirect=true" ajax="false" 
+                                         rendered="#{empty user}" />
+                    </h:form>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="zapad" position="west" size="210">
+                <div id="left">
+                    <h:form rendered="#{empty user}">
+                        <h:panelGrid columns="1" cellpadding="5">
+                            <h2>
+                                <h:outputLabel style="font-size: 14px; font-weight: bold" value="#{poruke.login}" />
+                            </h2>
+                            <p:outputLabel for="username">#{poruke.username}</p:outputLabel>
+                            <p:inputText id="username" value="#{login.username}" 
+                                         required="true" requiredMessage="#{poruke.usernameNijeUnet}" maxlength="30" size="12"/>
+                            <p:outputLabel for="password">#{poruke.password}</p:outputLabel>
+                            <p:password id="password" value="#{login.password}" 
+                                        required="true" requiredMessage="#{poruke.passwordNijeUnet}" maxlength="12" size="12"/>
+                            <p:commandButton action="#{login.login()}" value="#{poruke.loginDugme}" ajax="false"/>
+                            <!--POTREBNO JE DA STOJI ajax="false" JER p:commandButton INACE BAGUJE, A IONAKO VODI POTPUNO DRUGACIJU STRANU-->
+                            <p:messages closable="true" autoUpdate="true" binding="#{login.component}" />
+                        </h:panelGrid>
+                        <hr/>
+                    </h:form>
+
+                    <h:form>
+                        <p:commandButton value="#{poruke.gostPrvaStrana}" action="partneri.xhtml?faces-redirect=true" ajax="false" />
+                        <p:commandButton value="#{poruke.gostDrugaStrana}" action="paketi.xhtml?faces-redirect=true" ajax="false" />
+                        <p:commandButton value="#{poruke.gostTrecaStrana}" action="oglasi.xhtml?faces-redirect=true" ajax="false" />
+                        <p:commandButton value="#{poruke.gostCetvrtaStrana}" action="predavanja.xhtml?faces-redirect=true" ajax="false" />
+                        <ui:fragment rendered="#{not empty user}"><hr/></ui:fragment>
+                        <p:commandButton value="#{poruke.clanPocetna}" action="clanPocetna.xhtml?faces-redirect=true" ajax="false" 
+                                         rendered="#{not empty user}" />
+                        <p:commandButton value="#{poruke.dodavanjeKompanijeNaslov}" action="dodavanjeKompanije.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{not empty user}" />
+                        <p:commandButton value="#{poruke.pretraga}" action="pretraga.xhtml?faces-redirect=true" ajax="false" 
+                                         rendered="#{not empty user}" />
+                        <p:commandButton value="#{poruke.dodavanjeOglasaNaslov}" action="dodavanjeOglasa.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{not empty user}" />
+                        <p:commandButton value="#{poruke.dodavanjePredavanjaNaslov}" action="dodavanjePredavanja.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{not empty user}" />
+                        <ui:fragment rendered="#{(not empty user) and (user.tip ge 1)}"><hr/></ui:fragment>
+                        <p:commandButton value="#{poruke.ITmenPocetna}" action="ITmenPocetna.xhtml?faces-redirect=true" ajax="false" 
+                                         rendered="#{(not empty user) and (user.tip ge 1)}" />
+                        <p:commandButton value="#{poruke.kontaktiNaslov}" action="kontakti.xhtml?faces-redirect=true" ajax="false" 
+                                         rendered="#{(not empty user) and (user.tip ge 1)}" />
+                        <p:commandButton value="#{poruke.sklapNUNaslov}" action="sklapanjeNovcanogUgovora.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{(not empty user) and (user.tip ge 1)}" />
+                        <p:commandButton value="#{poruke.sklapDUNaslov}" action="sklapanjeDonatorskogUgovora.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{(not empty user) and (user.tip ge 1)}" />
+                        <ui:fragment rendered="#{(not empty user) and (user.tip eq 2)}"><hr/></ui:fragment>
+                        <p:commandButton value="#{poruke.odobravanjeNaslov}" action="odobravanjeRegistracija.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{(not empty user) and (user.tip eq 2)}" />
+                        <p:commandButton value="#{poruke.formiranjePaketaNaslov}" action="formiranjePaketa.xhtml?faces-redirect=true" 
+                                         ajax="false" rendered="#{(not empty user) and (user.tip eq 2)}" />
+                    </h:form>
+
+                    <ui:insert name="left">
+
+                    </ui:insert>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="centar" position="center">
+                <div id="content">
+                    <ui:insert name="content">
+
+                    </ui:insert>
+                </div>
+            </p:layoutUnit>
+
+            <p:layoutUnit id="jug" position="south" size="30">
+                <div id="bottom">
+                    <h:outputText value="#{poruke.footer}" />
+                </div>
+            </p:layoutUnit>
+
+        </p:layout>
+
+    </h:body>
+
+</html>

@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewAction action="#{predavanja.dohvatiPredavanja()}"/>
+    </f:metadata>
+    <h:head>
+        <!--<meta property="og:url" content="http://www.localhost:8080/PIA_jun-jul_2018_bv140094/faces/predavanja.xhtml"/>-->
+    </h:head>
+    <h:body>
+        <div id="fb-root"></div>
+        <script>(function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id))
+                    return;
+                js = d.createElement(s);
+                js.id = id;
+                js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&amp;version=v3.0';
+                fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));</script>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.gostCetvrtaStrana}
+            </ui:define>
+
+            <ui:define name="content">
+                <h2>
+                    #{poruke.predstojecaPredavanja}
+                </h2>
+                <ui:repeat value="#{predavanja.predavanja}" var="p">
+                    <ui:fragment rendered="#{dateBean.jeUBuducnosti(p.datum, p.vreme)}">
+                        <p:panel header="#{p.naslov}">
+                            <p>
+                                <h:outputText value="#{p.opis}" />
+                            </p>
+                            <hr/>
+                            <h:panelGrid columns="5" cellspacing="12" >
+                                <h:outputText value="#{poruke.datumOdrzavanja} #{dateBean.pretvoriSQLDateUDatumString(p.datum)}" />
+                                <h:outputText value="#{poruke.vremeOdrzavanja} #{dateBean.pretvoriSQLTimeUVremeString(p.vreme)}" />
+                                <h:outputText value="#{poruke.sala} #{p.sala}" />
+                                <h:outputText value="#{poruke.predavac} #{p.predavac}" />
+<!--                                <h:form rendered="#{not empty p.fajl}" >
+                                    <p:commandButton value="#{poruke.preuzmiPrilog}" ajax="false" icon="ui-icon-arrowthick-1-s">
+                                        <p:fileDownload value=""
+                                    </p:commandButton>
+                                </h:form>-->
+                                <div id="share" class="fb-share-button" data-href="http://www.localhost:8080/PIA_jun-jul_2018_bv140094/faces/detaljiPredavanja.xhtml?idPredavanja=#{p.id}" data-layout="button" data-size="small" data-mobile-iframe="false"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.localhost%3A8080%2FPIA_jun-jul_2018_bv140094%2Ffaces%2FdetaljiPredavanja.xhtml%3FidPredavanja%3D#{p.id}&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+                            </h:panelGrid>
+                        </p:panel>
+                    </ui:fragment>
+                </ui:repeat>
+                <br/>
+                <hr/>
+                <br/>
+                <h2>
+                    #{poruke.arhivaPredavanja}
+                </h2>
+                <ui:repeat value="#{predavanja.predavanja}" var="p">
+                    <ui:fragment rendered="#{(not dateBean.jeUBuducnosti(p.datum, p.vreme)) and (predavanja.brojacIspisanihArhiviranihPredavanja le 20)}">
+                        <p:panel header="#{p.naslov}">
+                            <p>
+                                <h:outputText value="#{p.opis}" />
+                            </p>
+                            <hr/>
+                            <h:panelGrid columns="4" cellspacing="12" >
+                                <h:outputText value="#{poruke.datumOdrzavanja} #{dateBean.pretvoriSQLDateUDatumString(p.datum)}" />
+                                <h:outputText value="#{poruke.vremeOdrzavanja} #{dateBean.pretvoriSQLTimeUVremeString(p.vreme)}" />
+                                <h:outputText value="#{poruke.sala} #{p.sala}" />
+                                <h:outputText value="#{poruke.predavac} #{p.predavac}" />
+                            </h:panelGrid>
+                        </p:panel>
+                    </ui:fragment>
+                </ui:repeat>
+
+            </ui:define>
+
+            <ui:define name="left">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

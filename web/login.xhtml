@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./startTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.loginNaslov}
+            </ui:define>
+
+            <ui:param name="activeIndex" value="0"/>
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="5">
+                        <p:outputLabel for="username">#{poruke.username}</p:outputLabel>
+                        <p:inputText id="username" value="#{login.username}" 
+                                     required="true" requiredMessage="#{poruke.usernameNijeUnet}" maxlength="30" size="30"/>
+
+                        <p:outputLabel for="password">#{poruke.password}</p:outputLabel>
+                        <p:password id="password" value="#{login.password}" 
+                                    required="true" requiredMessage="#{poruke.passwordNijeUnet}" maxlength="12" size="12"/>
+                    </h:panelGrid>
+                    <p:commandButton action="#{login.login()}" value="#{poruke.loginDugme}" ajax="false"/>
+                    <p:messages closable="true" autoUpdate="true" binding="#{login.component}" />
+                    <br/>
+                </h:form>
+                <br/><br/>
+                <h:form>
+                    <!--KORISTI SE h:commandLink UMESTO p:commandLink JER PRIMEFACES IMA BAG-->
+                    <h:commandLink action="partneri?faces-redirect=true" value="#{poruke.nastaviNeregistrovan}"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

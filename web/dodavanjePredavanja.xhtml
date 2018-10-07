@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.dodavanjePredavanjaNaslov}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid id="polja" columns="2" cellpadding="5">
+                        <p:outputLabel for="kompanija">#{poruke.predavanjeZaKompaniju}</p:outputLabel>
+                        <p:selectOneMenu id="kompanija" value="#{dodajPredavanje.idKompanije}" required="true" 
+                                         rendered="#{not empty dodajPredavanje.listaKompanija}" >
+                            <f:selectItems value="#{dodajPredavanje.listaKompanija}" var="k" 
+                                           itemLabel="#{k.naziv}" itemValue="#{k.id}" />
+                        </p:selectOneMenu>
+                        <h:outputText styleClass="greska" value="#{poruke.nePredstavljaNijednuKompaniju}" rendered="#{empty dodajPredavanje.listaKompanija}" />
+
+                        <p:outputLabel for="naslov">#{poruke.predavanjeNaslov}</p:outputLabel>
+                        <p:inputText id="naslov" value="#{dodajPredavanje.novoPredavanje.naslov}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="100" size="30"/>
+
+                        <p:outputLabel for="naslovEn">#{poruke.predavanjeNaslovEn}</p:outputLabel>
+                        <p:inputText id="naslovEn" value="#{dodajPredavanje.novoPredavanje.naslov_en}" maxlength="100" size="30"/>
+                        
+                        <p:outputLabel for="opis">#{poruke.predavanjeOpis}</p:outputLabel>
+                        <p:inputTextarea id="opis" value="#{dodajPredavanje.novoPredavanje.opis}" maxlength="1000" required="true"
+                                         rows="8" cols="50" autoResize="true" requiredMessage="#{poruke.obaveznoPolje}" />
+                        
+                        <p:outputLabel for="opisEn">#{poruke.predavanjeOpisEn}</p:outputLabel>
+                        <p:inputTextarea id="opisEn" value="#{dodajPredavanje.novoPredavanje.opis_en}" maxlength="1000" 
+                                         rows="8" cols="50" autoResize="true" />
+                        
+                        <p:outputLabel for="datum">#{poruke.predavanjeDatum}</p:outputLabel>
+                        <p:calendar id="datum" required="true" navigator="false" pattern="dd.MM.yyyy." maxdate="c+731" 
+                                    mindate="#{dateBean.dohvatiDanas()}" 
+                                    requiredMessage="#{poruke.obaveznoPolje}" value="#{dodajPredavanje.datum}" />
+                        
+                        <p:outputLabel for="vreme">#{poruke.predavanjeVreme}</p:outputLabel>
+                        <p:calendar id="vreme" required="true" navigator="false" pattern="HH:mm" timeOnly="true"
+                                    requiredMessage="#{poruke.obaveznoPolje}" value="#{dodajPredavanje.vreme}" />
+                        
+                        <p:outputLabel for="sala">#{poruke.predavanjeSala}</p:outputLabel>
+                        <p:inputText id="sala" value="#{dodajPredavanje.novoPredavanje.sala}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="45" size="30"/>
+
+                        <p:outputLabel for="predavac">#{poruke.predavanjePredavac}</p:outputLabel>
+                        <p:inputText id="predavac" value="#{dodajPredavanje.novoPredavanje.predavac}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="70" size="30"/>
+                        
+                        <p:outputLabel for="bio">#{poruke.predavanjeBiografija}</p:outputLabel>
+                        <p:inputTextarea id="bio" value="#{dodajPredavanje.novoPredavanje.biografija}" maxlength="1000" 
+                                         rows="8" cols="50" autoResize="true" />
+                        
+                        <p:outputLabel for="uploadFajl">#{poruke.predavanjeFajl}</p:outputLabel>
+                        <p:fileUpload id="uploadFajl" allowTypes="/(\.|\/)(docx?|pdf)$/" mode="simple" sizeLimit="1048576"
+                                      label="#{poruke.odaberi}" invalidFileMessage="#{poruke.predavanjeFajlEkstenzije}" 
+                                      invalidSizeMessage="#{poruke.invalidSizeMessage}" value="#{uploadBeanPredavanje.fajl}" />
+                        
+                        <p:outputLabel for="uploadSlika">#{poruke.predavanjeSlika}</p:outputLabel>
+                        <p:fileUpload id="uploadSlika" allowTypes="/(\.|\/)(jpe?g|png|tiff?)$/" mode="simple" sizeLimit="2097152"
+                                      label="#{poruke.odaberi}" invalidFileMessage="#{poruke.predavanjeSlikaEkstenzije}" 
+                                      invalidSizeMessage="#{poruke.invalidSizeMessage}" value="#{uploadBeanPredavanje.slika}" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{dodajPredavanje.dodajPredavanje(uploadBeanPredavanje)}"
+                                         value="#{poruke.dodajPredavanjeDugme}" ajax="false" 
+                                         update="polja" disabled="#{empty dodajPredavanje.listaKompanija}" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+        
+    </h:body>
+</html>
+

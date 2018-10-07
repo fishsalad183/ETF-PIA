@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.pretraga}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid columns="2" >
+                        <p:outputLabel for="paket" >#{poruke.nazivPaketa}</p:outputLabel>
+                        <p:inputText id="paket" value="#{pretraga.paket}" size="30" />
+
+                        <p:outputLabel for="kompanija" >#{poruke.nazivKompanije}</p:outputLabel>
+                        <p:inputText id="kompanija" value="#{pretraga.kompanija}" size="30" />
+
+                        <p:outputLabel for="@next" >#{poruke.samoAktuelne}</p:outputLabel>
+                        <p:selectBooleanCheckbox value="#{pretraga.samoAktuelne}" />
+                    </h:panelGrid>
+                    <p:commandButton value="#{poruke.pretragaDugme}" action="#{pretraga.pretrazi()}" ajax="true" update=":rez" />
+                </h:form>
+                <br/>
+                <p:dataGrid value="#{pretraga.rezultati}" var="r" columns="4" rows="20" paginator="true" id="rez" class="dataGridRezultati"
+                            emptyMessage="#{poruke.nemaRezultata}" >
+                    <f:facet name="header">#{poruke.rezultati}</f:facet>
+                    <p:panel header="#{r.naziv}" style="text-align: center" >
+                        <h:panelGrid columns="1" width="100%" >
+                            <p:graphicImage rendered="#{not empty r.logo}" value="resources/#{r.logo}" alt="#{poruke.slikaNijePronadjena}"
+                                            height="100" width="150" />
+                            <h:outputText rendered="#{empty r.logo}" value="#{poruke.nemaSliku}" />
+                            <h:form>
+                                <h:link outcome="dosije" title="#{poruke.vidiDosije}" >
+                                    <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                    <f:param name="idKompanije" value="#{r.id}" />
+                                </h:link>
+                            </h:form>
+                        </h:panelGrid>
+                    </p:panel>
+                </p:dataGrid>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

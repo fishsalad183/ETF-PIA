@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <!-- ZA TOOLTIP, ALI NE IDE
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+    -->
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.formiranjePaketaNaslov}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid id="polja" columns="2" cellpadding="5">
+                        <p:outputLabel for="naziv">#{poruke.formiranjePaketaNaziv}</p:outputLabel>
+                        <p:inputText id="naziv" value="#{formirajPaket.noviPaket.naziv}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="60" size="30"/>
+
+                        <p:outputLabel for="vrednost">#{poruke.formiranjePaketaVrednost}</p:outputLabel>
+                        <p:inputText id="vrednost" value="#{formirajPaket.noviPaket.vrednost}" size="10" maxlength="10" 
+                                     validatorMessage="#{poruke.vrednostRange}" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" >
+                            <f:validateDoubleRange minimum="500" maximum="1000000" />
+                        </p:inputText>
+
+                        <p:outputLabel for="trajanje">#{poruke.formiranjePaketaTrajanje}</p:outputLabel>
+                        <p:inputText id="trajanje" value="#{formirajPaket.noviPaket.trajanje}" maxlength="10" size="10" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" validatorMessage="#{poruke.formiranjePaketaTrajanjeRange}" >
+                            <f:validateLongRange minimum="1" maximum="20" />
+                        </p:inputText>
+
+                        <p:outputLabel for="maksKomp">#{poruke.formiranjePaketaMaksKomp}</p:outputLabel>
+                        <p:inputText id="maksKomp" value="#{formirajPaket.noviPaket.maks_komp}" maxlength="10" size="10" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" validatorMessage="#{poruke.formiranjePaketaMaksKompRange}" >
+                            <f:validateLongRange minimum="1" maximum="100" />
+                        </p:inputText>
+
+                        <p:outputLabel for="stavke">#{poruke.formiranjePaketaStavke}</p:outputLabel>
+                        <p:selectManyCheckbox id="stavke" required="true" value="#{formirajPaket.odabraneStavke}"
+                                              requiredMessage="#{poruke.oglasMoraBarJedno}" validatorMessage="#{poruke.oglasMoraBarJedno}"
+                                              layout="pageDirection" >
+                            <f:selectItems value="#{formirajPaket.stavke}" var="s" itemLabel="#{s.naziv}" itemValue="#{s.id}" />
+                            <!-- KOD ISPOD JE DA OMOGUCI TOOLTIP, ALI NESTO NE RADI -->
+<!--                            <c:forEach items="#{formirajPaket.stavke}" var="s" >
+                                <f:selectItem itemValue="#{s.id}" itemLabel="#{s.naziv}" a:title="#{s.opis}" />
+                            </c:forEach>-->
+                        </p:selectManyCheckbox>
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{formirajPaket.formiraj()}" value="#{poruke.formiranjePaketaDugme}" ajax="true" 
+                                         update="polja" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

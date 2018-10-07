@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewAction action="#{paketi.dohvatiPakete(true)}"/>
+    </f:metadata>
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.gostDrugaStrana}
+            </ui:define>
+
+            <ui:define name="content">
+                
+                <p:dataTable var="p" value="#{paketi.paketi}">
+                    <f:facet name="header">
+                        #{poruke.paketi}
+                    </f:facet>
+
+                    <p:column headerText="#{poruke.nazivPaketa}" sortBy="#{p.naziv}" width="15%">
+                        <h:outputText value="#{p.naziv}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{poruke.vrednostPaketa}" sortBy="#{p.vrednost}" width="15%">
+                        <h:outputText value="#{p.vrednost}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{poruke.sadrzajPaketa}" width="70%">
+                        <ui:repeat value="#{paketi.dohvatiStavke(p.id)}" var="stavka">
+                            <p>
+                                <h:outputText value="- #{stavka.opis}"/>
+                            </p>
+                        </ui:repeat>
+                    </p:column>
+                </p:dataTable>
+                
+            </ui:define>
+
+            <ui:define name="left">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

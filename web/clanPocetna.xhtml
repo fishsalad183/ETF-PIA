@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{kompanije.dohvatiKompanije(true)}"/>
+    </f:metadata>
+    <h:head>
+        
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.clanPocetna}
+            </ui:define>
+
+            <ui:define name="content">
+                <p:dataTable value="#{kompanije.dohvatiNajskorijih5Potpisanih()}" var="k" emptyMessage="/" >
+                    <p:column headerText="#{poruke.kompanijeNajskorijiUgovori}" >
+                        <h:outputText value="#{k.naziv}" style="color: red" rendered="#{kompanije.jePredstavnik(user, k)}"/>
+                        <h:outputText value="#{k.naziv}" rendered="#{not kompanije.jePredstavnik(user, k)}"/>
+                    </p:column>
+                </p:dataTable>
+                
+                <br/>
+                
+                <p:dataTable value="#{kompanije.dohvatiNajskorijih5Isticu()}" var="k" emptyMessage="/" >
+                    <p:column headerText="#{poruke.kompanijeUgovoriUskoroIsticu}" >
+                        <h:outputText value="#{k.naziv}" style="color: red" rendered="#{kompanije.jePredstavnik(user, k)}"/>
+                        <h:outputText value="#{k.naziv}" rendered="#{not kompanije.jePredstavnik(user, k)}"/>
+                    </p:column>
+                </p:dataTable>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

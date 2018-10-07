@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.sklapNUNaslov}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form>
+                    <h:panelGrid id="polja" columns="2" cellpadding="5">
+                        <p:outputLabel for="kompanija">#{poruke.sklapNUKomp}</p:outputLabel>
+                        <p:selectOneMenu id="kompanija" value="#{nUgo.idKompanije}" required="true" >
+                            <f:selectItems value="#{nUgo.ponudjeneKompanije}" var="k" 
+                                           itemLabel="#{k.naziv}" itemValue="#{k.id}" />
+                        </p:selectOneMenu>
+
+                        <!--
+                        <p:outputLabel for="paket">#{poruke.sklapNUPaket}</p:outputLabel>
+                        <p:selectOneMenu id="paket" value="#{nUgo.idPaketa}" required="true" >
+                            <f:selectItems value="#{nUgo.ponudjeniPaketi}" var="p" 
+                                           itemLabel="#{p.naziv}" itemValue="#{p.id}" />
+                        </p:selectOneMenu>
+                        -->
+
+                        <p:outputLabel for="vrednost">#{poruke.sklapNUVrednost}</p:outputLabel>
+                        <p:inputText id="vrednost" value="#{nUgo.noviUgovor.vrednost}" size="10" maxlength="10" 
+                                     validatorMessage="#{poruke.vrednostRange}" required="true" 
+                                     requiredMessage="#{poruke.obaveznoPolje}" >
+                            <f:validateDoubleRange minimum="500" maximum="1000000" />
+                        </p:inputText>
+
+                        <p:outputLabel for="datUgo">#{poruke.sklapNUDatumUg}</p:outputLabel>
+                        <p:calendar id="datUgo" required="true" navigator="false" pattern="dd.MM.yyyy." 
+                                    requiredMessage="#{poruke.obaveznoPolje}" value="#{nUgo.noviUgovor.datum_ugovora}" />
+
+                        <p:outputLabel for="status">#{poruke.sklapNUStatus}</p:outputLabel>
+                        <p:selectOneMenu id="status" value="#{nUgo.idStatusa}" required="true" >
+                            <f:selectItems value="#{nUgo.ponudjeniStatusi}" var="s" 
+                                           itemLabel="#{s.opis}" itemValue="#{s.id}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="faktura">#{poruke.sklapNUFaktura}</p:outputLabel>
+                        <p:selectBooleanCheckbox id="faktura" value="#{nUgo.noviUgovor.faktura_poslata}" />
+
+                        <p:outputLabel for="uplata">#{poruke.sklapNUUplata}</p:outputLabel>
+                        <p:selectBooleanCheckbox id="uplata" value="#{nUgo.noviUgovor.uplata_izvrsena}" >
+                            <p:ajax event="change" update="datUpl datUplLabel" />
+                        </p:selectBooleanCheckbox>
+
+                        <p:outputLabel id="datUplLabel" for="datUpl">#{poruke.sklapNUDatumUpl}</p:outputLabel>
+                        <p:calendar id="datUpl" navigator="false" pattern="dd.MM.yyyy." value="#{nUgo.noviUgovor.datum_uplate}" 
+                                    disabled="#{!nUgo.noviUgovor.uplata_izvrsena}" required="#{nUgo.noviUgovor.uplata_izvrsena}" 
+                                    requiredMessage="#{poruke.obaveznoPolje}" />
+
+                        <p:outputLabel for="komentar">#{poruke.sklapNUKomentar}</p:outputLabel>
+                        <p:inputTextarea id="komentar" value="#{nUgo.noviUgovor.komentar}" maxlength="400" 
+                                         rows="8" cols="50" autoResize="false" />
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{nUgo.sklopiUgovor()}" value="#{poruke.sklapNUDugme}" ajax="true" update="polja" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

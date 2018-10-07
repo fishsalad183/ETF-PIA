@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.dodavanjeOglasaNaslov}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid id="polja" columns="2" cellpadding="5">
+                        <p:outputLabel for="kompanija">#{poruke.oglasZaKompaniju}</p:outputLabel>
+                        <p:selectOneMenu id="kompanija" value="#{dodajOglas.idKompanije}" required="true" 
+                                         rendered="#{not empty dodajOglas.listaKompanija}" >
+                            <f:selectItems value="#{dodajOglas.listaKompanija}" var="k" 
+                                           itemLabel="#{k.naziv}" itemValue="#{k.id}" />
+                        </p:selectOneMenu>
+                        <h:outputText styleClass="greska" value="#{poruke.nePredstavljaNijednuKompaniju}" rendered="#{empty dodajOglas.listaKompanija}" />
+
+                        <p:outputLabel for="naslov">#{poruke.oglasNaslov}</p:outputLabel>
+                        <p:inputText id="naslov" value="#{dodajOglas.noviOglas.naslov}" 
+                                     required="true" requiredMessage="#{poruke.obaveznoPolje}" maxlength="100" size="30"/>
+
+                        <p:outputLabel for="opis">#{poruke.oglasOpis}</p:outputLabel>
+                        <p:inputTextarea id="opis" value="#{dodajOglas.noviOglas.opis}" maxlength="400" 
+                                         rows="8" cols="50" autoResize="false" />
+
+                        <p:outputLabel for="ponuda">#{poruke.oglasPonuda}</p:outputLabel>
+                        <p:selectManyCheckbox id="ponuda" required="true" value="#{dodajOglas.ponude}" requiredMessage="#{poruke.oglasMoraBarJedno}"
+                                              validatorMessage="#{poruke.oglasMoraBarJedno}" layout="pageDirection" >
+                            <f:selectItem itemLabel="#{poruke.oglasPraksa}" itemValue="praksa" />
+                            <f:selectItem itemLabel="#{poruke.oglasZaposlenje}" itemValue="zaposlenje" />
+                        </p:selectManyCheckbox>
+
+                        <p:outputLabel for="upload">#{poruke.oglasFajl}</p:outputLabel>
+                        <p:fileUpload id="upload" allowTypes="/(\.|\/)(jpe?g|png|tiff?|pdf)$/" sizeLimit="3145728" fileLimit="1" mode="advanced" 
+                                      label="#{poruke.odaberi}" uploadLabel="#{poruke.upload}" cancelLabel="#{poruke.otkazi}"
+                                      invalidFileMessage="#{poruke.invalidFileMessage}" invalidSizeMessage="#{poruke.invalidSizeMessage}"
+                                      fileLimitMessage="#{poruke.fileLimitMessage}" validatorMessage="#{poruke.neodgovarajuceDimenzije}"
+                                      fileUploadListener="#{uploadBeanOglas.handleFileUpload}" />
+
+                    </h:panelGrid>
+                    <h:panelGrid columns="2" cellpadding="5" >
+                        <p:commandButton action="#{dodajOglas.dodajOglas(uploadBeanOglas)}" value="#{poruke.dodajOglasDugme}" ajax="false" 
+                                         update="polja" disabled="#{empty dodajOglas.listaKompanija}" />
+                        <p:messages closable="true" autoUpdate="true" />
+                    </h:panelGrid>
+                </h:form>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

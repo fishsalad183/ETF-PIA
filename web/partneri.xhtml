@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:metadata>
+        <f:viewAction action="#{paketi.dohvatiPakete()}"/>
+        <f:viewAction action="#{kompanije.dohvatiKompanije()}"/>
+    </f:metadata>
+    <h:head>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.gostPrvaStrana}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <p:panelGrid columns="2" style="width: 100%" columnClasses="forty-percent, sixty-percent" >
+                    <h:panelGroup style="width: 25%" >
+                        <p:outputPanel>
+                            <p:dataTable var="paket" value="#{paketi.paketi}" >
+                                <p:column headerText="#{poruke.brziLinkovi}">
+                                    <p:link value="#{paket.naziv}" fragment="#{paket.naziv}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
+                    </h:panelGroup>
+                    <h:panelGroup style="width: auto" >
+                        <h:form>
+                            <p:outputPanel>
+                                <!-- pretraga je realizovana preko ajaxa, filtriraju se kompanije dok se kuca -->
+                                <p:outputLabel for="pretraga" style="align-content: center; font-weight: bold">
+                                    #{poruke.pretragaKompanija}
+                                </p:outputLabel>
+                                <br/>
+                                <p:inputText id="pretraga" size="30" maxlength="50" value="#{kompanije.pretraga}" >
+                                    <!-- dve tačke su potrebne kod update u ajaxu da bi ciljao izvan forme u kojoj se nalazi --> 
+                                    <p:ajax event="keyup" update=":partneri" />
+                                </p:inputText>
+                            </p:outputPanel>
+                        </h:form>
+                    </h:panelGroup>
+                </p:panelGrid>
+
+                <br/>
+                <!-- potrebno je da bude uokvireno u h:panelGroup da bi update u ajaxu mogao da cilja -->
+                <h:panelGroup id="partneri" >
+                    <ui:repeat value="#{paketi.paketi}" var="paket">
+                        <br/>
+                        <h1 id="#{paket.naziv}">#{paket.naziv}</h1>
+                        <br/>
+                        <ui:repeat value="#{kompanije.dohvatiKompanijePoPaketu(paket.id)}" var="k">
+                            <h2>
+                                <a href="#{k.web}" target="_blank">
+                                    <h:outputText rendered="#{(paket.id le 3) or (paket.id eq 6)}" value="#{k.naziv}"/>
+                                </a>
+                            </h2>
+                            <a href="#{k.web}" target="_blank">
+
+                                <!-- UČITAVA SLIKE IZ resources/ FOLDERA, U BAZI PODATAKA SE NALAZI SAMO NAZIV FAJLA SLIKE -->
+                                <p:graphicImage value="resources/#{k.logo}" rendered="#{paket.id le 5}" alt="#{poruke.slikaNijePronadjena}: #{k.logo}"/>
+
+                                <!-- ZA SLUCAJ DA SU POTREBNE APSOLUTNE PUTANJE DO SLIKA, OTKOMENTARISATI NAREDNI KOD -->
+                                <!--
+                                <p:graphicImage value="#{imageBean.image}" rendered="#{paket.id le 5}" alt="#{poruke.slikaNijePronadjena}: #{k.logo}">
+                                    <f:param name="filename" value="#{k.logo}" />
+                                </p:graphicImage>
+                                -->
+                            </a>
+                            <p>
+                                <h:outputText rendered="#{paket.id le 3}" value="#{k.opis}"/>
+                            </p>
+                        </ui:repeat>
+                        <br/>
+                        <hr/>
+                    </ui:repeat>
+                </h:panelGroup>
+
+            </ui:define>
+
+            <ui:define name="left">
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+

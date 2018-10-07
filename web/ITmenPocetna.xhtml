@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./mainTemplate.xhtml">
+
+            <ui:define name="title">
+                #{poruke.ITmenPocetna}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <p:chart type="line" model="#{vremenskiDijagram.dateModel}" style="height: 400px" >
+                    <p:ajax event="itemSelect" listener="#{vremenskiDijagram.itemSelect}" />
+                </p:chart>
+
+                <br/>
+                <hr/>
+
+                <p:dataTable value="#{vremenskiDijagram.komp20IsticuKroz6Meseci}" var="k" emptyMessage="/" >
+                    <p:column headerText="#{poruke.kompanijeZa6MeseciIsticu}" >
+                        <h:link outcome="dosije" >
+                            <h:outputText value="#{k.naziv}" />
+                            <f:param name="idKompanije" value="#{k.id}" />
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+                <br/>
+                <p:dataTable value="#{vremenskiDijagram.komp20IstekliUPrethodnih6Meseci}" var="k" emptyMessage="/" >
+                    <p:column headerText="#{poruke.kompanijePrethodnih6Meseci}" >
+                        <h:link outcome="dosije" >
+                            <h:outputText value="#{k.naziv}" />
+                            <f:param name="idKompanije" value="#{k.id}" />
+                        </h:link>
+                    </p:column>
+                </p:dataTable>
+
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
+
